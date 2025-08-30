@@ -1,0 +1,119 @@
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #E0F7FA, #FFFFFF);
+  margin: 0;
+  color: #333;
+  padding-top: 60px;
+}
+
+.header, .footer {
+  background-color: #87CEEB;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.calculator-main {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.calculator {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  text-align: center;
+}
+
+.calculator h1 {
+  color: #007BFF;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calculator input,
+.calculator select,
+.calculator button {
+  width: 90%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 1em;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.calculator input,
+.calculator select {
+    color: #333;
+}
+
+.calculator input:focus,
+.calculator select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.calculator button {
+  background: linear-gradient(45deg, #007BFF, #00BFFF);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+.calculator button:hover {
+  background: linear-gradient(45deg, #0056b3, #007BFF);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+
+.calculator h2 {
+  margin-top: 20px;
+  font-size: 1.8em;
+  color: #007BFF;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(5px);
+  border-radius: 10px;
+  padding: 10px;
+  width: 90%;
+}
+
+.image {
+  margin: 20px;
+}
+
+.image img {
+  width: 300px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}
