@@ -1,4 +1,4 @@
-name: .NET CI/CD Pipeline
+name: CI-CD Pipeline
 
 on:
   push:
@@ -11,35 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout repo
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v4
 
-    # 2. Setup .NET
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.x'   # adjust to your version (e.g. 8.0.x)
+        dotnet-version: 9.0.x
 
-    # 3. Restore dependencies
     - name: Restore dependencies
       run: dotnet restore
 
-    # 4. Build the solution
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
-    # 5. Run unit tests
-    - name: Run Unit Tests
-      run: dotnet test --no-build --verbosity normal
-
-    # 6. (Optional) Run backend API in background for automation tests
+    #  Start backend API in background
     - name: Run backend API
       run: |
-        dotnet run --project Backend/Backend.csproj --urls "http://localhost:5095" &
-        sleep 10   # wait for API to start
+        nohup dotnet run --project Backend/Backend.csproj --urls "http://localhost:5095" &
+        sleep 10  # wait for API to boot up
 
-    # 7. (Optional) Run automation tests (like Selenium, etc.)
-    # Comment out if you don’t have UI tests yet
-    - name: Run Automation Tests
-      run: dotnet test Backend.Tests/Backend.Tests.csproj --no-build
+    - name: Run tests
+      run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test_results.trx"
