@@ -1,4 +1,4 @@
-name: .NET Backend CI
+name: .NET CI
 
 on:
   push:
@@ -7,48 +7,43 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-test:
+  build-test:
     runs-on: windows-latest
 
     steps:
-    # 1. Checkout the code
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v4
 
-    # 2. Setup .NET SDK
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
-    # 3. Restore dependencies
     - name: Restore dependencies
-      run: dotnet restore Backend/Backend.csproj
+      run: dotnet restore
 
-    # 4. Build solution
-    - name: Build solution
-      run: dotnet build Backend/Backend.csproj --no-restore --configuration Release
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
 
-    # 5. Run API in background
     - name: Run API in background
-      shell: pwsh
       run: |
-        Start-Process -NoNewWindow -FilePath "dotnet" -ArgumentList "run --project Backend/Backend.csproj --urls=http://localhost:5095"
-        Start-Sleep -Seconds 10  # wait for server to start
+        Start-Job { dotnet run --project Backend/Backend.csproj --urls=http://localhost:5095 }
+        Start-Sleep -Seconds 10   # wait for API to be up
 
-    # 6. Test API availability
-    - name: Test Calculator/add endpoint
-      run: curl "http://localhost:5095/Calculator/add?a=5&b=3"
+    - name: Test API endpoint - Calculator Add
+      run: |
+        $response = Invoke-WebRequest -Uri "http://localhost:5095/Calculator/add?a=5&b=3" -UseBasicParsing
+        Write-Output "Response: $($response.Content)"
 
-    - name: Test CalculatorHistory endpoint
-      run: curl "http://localhost:5095/CalculatorHistory"
+    - name: Test API endpoint - Calculator History
+      run: |
+        $response = Invoke-WebRequest -Uri "http://localhost:5095/CalculatorHistory" -UseBasicParsing
+        Write-Output "Response: $($response.Content)"
 
-    # 7. Run unit tests
-    - name: Run tests
-      run: dotnet test Backend.Tests/Backend.Tests.csproj --no-build --verbosity normal
+    - name: Run Tests
+      run: dotnet test --no-build --verbosity normal
 
-    # 8. Upload test results
-    - name: Upload test results
+    - name: Upload Test Results
       uses: actions/upload-artifact@v4
       with:
         name: test-results
