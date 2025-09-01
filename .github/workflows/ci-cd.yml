@@ -11,25 +11,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout repository
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # Step 2: Setup .NET
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
 
+    # Step 3: Restore dependencies
     - name: Restore dependencies
       run: dotnet restore
 
+    # Step 4: Build the solution
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
-    #  Start backend API in background
+    # Step 5: Start backend API in background
     - name: Run backend API
       run: |
-        nohup dotnet run --project Backend/Backend.csproj --urls "http://localhost:5095" &
-        sleep 10  # wait for API to boot up
+        nohup dotnet run --project Backend/Backend.csproj --urls "http://localhost:5095" > backend.log 2>&1 &
+        echo "Waiting for API to start..."
+        sleep 15  # give API time to boot
 
+    # Step 6: Run tests
     - name: Run tests
       run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test_results.trx"
