@@ -1,0 +1,34 @@
+name: .NET + UI Tests CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Restore
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release
+
+    - name: Run Backend API
+      run: |
+        start /B dotnet run --project Backend/Backend.csproj --urls=http://localhost:5095
+        timeout /t 10
+
+    - name: Run Tests
+      run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test_results.trx"
+
