@@ -38,14 +38,12 @@ jobs:
 
     # 6. Test API availability
     - name: Test Calculator/add endpoint
-      run: |
-        curl http://localhost:5095/Calculator/add?a=5&b=3
+      run: curl "http://localhost:5095/Calculator/add?a=5&b=3"
 
     - name: Test CalculatorHistory endpoint
-      run: |
-        curl http://localhost:5095/CalculatorHistory
+      run: curl "http://localhost:5095/CalculatorHistory"
 
-    # 7. Run unit tests (NUnit)
+    # 7. Run unit tests
     - name: Run tests
       run: dotnet test Backend.Tests/Backend.Tests.csproj --no-build --verbosity normal
 
@@ -55,5 +53,3 @@ jobs:
       with:
         name: test-results
         path: TestResults/
-
-
