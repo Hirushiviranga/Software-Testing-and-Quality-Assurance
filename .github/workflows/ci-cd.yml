@@ -26,10 +26,10 @@ jobs:
       run: dotnet build --no-restore --configuration Release
 
     # Start backend API in background
-    - name: Run backend API
+    - name: Start backend API
       run: |
         nohup dotnet run --project Backend/Backend.csproj --urls "http://0.0.0.0:5095" > backend.log 2>&1 &
-        echo "Waiting for API to be ready..."
+        echo "Waiting for API to start..."
         for i in {1..30}; do
           if curl -s http://127.0.0.1:5095/CalculatorHistory > /dev/null; then
             echo "API is ready!"
@@ -40,11 +40,14 @@ jobs:
 
     # Run backend + UI tests
     - name: Run tests
+      env:
+        DOTNET_ROOT: ${{ runner.toolcache }}/dotnet
       run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test_results.trx"
 
-    # Optional: upload test results
-    - name: Upload Test Results
+    # Upload test results
+    - name: Upload test results
       uses: actions/upload-artifact@v3
       with:
         name: test-results
         path: Backend.Tests/TestResults/test_results.trx
+
