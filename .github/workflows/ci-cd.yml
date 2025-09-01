@@ -1,35 +1,60 @@
 name: CI-CD Pipeline
 
+
+
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
+    # Setup .NET
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 9.0.x
 
-    - name: Restore dependencies
+    # Restore dependencies
+    - name: Restore
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
+    # Build backend
+    - name: Build Backend
+      run: dotnet build Backend/Backend.csproj --configuration Release
 
-    #  Start backend API in background
-    - name: Run backend API
+    # Run backend in background
+    - name: Run Backend API
+      shell: pwsh
       run: |
-        nohup dotnet run --project Backend/Backend.csproj --urls "http://localhost:5095" &
-        sleep 10  # wait for API to boot up
+        Start-Process -NoNewWindow -FilePath "dotnet" -ArgumentList "run --project Backend/Backend.csproj --urls=http://localhost:5095"
+        Start-Sleep -Seconds 15
 
-    - name: Run tests
+    # Optionally, run React frontend if UI tests need it
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+
+    - name: Install React dependencies
+      run: |
+        cd Frontend
+        npm install
+
+    - name: Run React App
+      shell: pwsh
+      run: |
+        Start-Process -NoNewWindow -FilePath "npm" -ArgumentList "start"
+        Start-Sleep -Seconds 20
+
+    # Run all tests
+    - name: Run Tests
       run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test_results.trx"
