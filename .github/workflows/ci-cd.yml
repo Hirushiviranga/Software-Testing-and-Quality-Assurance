@@ -25,11 +25,10 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
-    #  Start backend API in background
-    - name: Run backend API
+    - name: Run Backend API in background
       run: |
-        nohup dotnet run --project Backend/Backend.csproj --urls "http://localhost:5095" &
-        sleep 10  # wait for API to boot up
+        nohup dotnet run --project Backend/Backend.csproj --urls=http://localhost:5095 > backend.log 2>&1 &
+        sleep 15
 
     - name: Run tests
       run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test_results.trx"
