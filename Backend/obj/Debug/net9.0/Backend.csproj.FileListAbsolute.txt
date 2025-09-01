@@ -62,3 +62,4 @@ D:\QA1\Backend\obj\Debug\net9.0\refint\Backend.dll
 D:\QA1\Backend\obj\Debug\net9.0\Backend.pdb
 D:\QA1\Backend\obj\Debug\net9.0\Backend.genruntimeconfig.cache
 D:\QA1\Backend\obj\Debug\net9.0\ref\Backend.dll
+D:\QA1\Backend\obj\Debug\net9.0\Backend.sourcelink.json

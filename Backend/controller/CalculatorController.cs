@@ -1,4 +1,5 @@
-//non automated tests
+//automated tests
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -7,40 +8,45 @@ namespace Backend.Controllers
     [Route("[controller]")]
     public class CalculatorController : ControllerBase
     {
-        public CalculatorController()
-        {
-        }
+        public CalculatorController() { }
 
-        // Add two numbers
         [HttpGet("Add")]
         public IActionResult Add(int a, int b)
         {
-            return Ok(a + b);
+            int result = a + b;
+            string expression = $"{a} + {b}";
+            CalculatorHistoryController.AddToHistory(expression, result.ToString());
+            return Ok(result);
         }
 
-        // Subtract two numbers
         [HttpGet("Subtract")]
         public IActionResult Subtract(int a, int b)
         {
-            return Ok(a - b);
+            int result = a - b;
+            string expression = $"{a} - {b}";
+            CalculatorHistoryController.AddToHistory(expression, result.ToString());
+            return Ok(result);
         }
 
-        // Multiply two numbers
         [HttpGet("Multiply")]
         public IActionResult Multiply(int a, int b)
         {
-            return Ok(a * b);
+            int result = a * b;
+            string expression = $"{a} * {b}";
+            CalculatorHistoryController.AddToHistory(expression, result.ToString());
+            return Ok(result);
         }
 
-        // Divide two numbers
         [HttpGet("Divide")]
         public IActionResult Divide(int a, int b)
         {
             if (b == 0)
                 return BadRequest("Cannot divide by zero");
 
-            return Ok(a / b);
+            int result = a / b;
+            string expression = $"{a} / {b}";
+            CalculatorHistoryController.AddToHistory(expression, result.ToString());
+            return Ok(result);
         }
     }
 }
-

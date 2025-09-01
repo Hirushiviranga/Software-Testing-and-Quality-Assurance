@@ -194,3 +194,4 @@ D:\QA1\Backend.Tests\obj\Debug\net9.0\refint\Backend.Tests.dll
 D:\QA1\Backend.Tests\obj\Debug\net9.0\Backend.Tests.pdb
 D:\QA1\Backend.Tests\obj\Debug\net9.0\Backend.Tests.genruntimeconfig.cache
 D:\QA1\Backend.Tests\obj\Debug\net9.0\ref\Backend.Tests.dll
+D:\QA1\Backend.Tests\obj\Debug\net9.0\Backend.Tests.sourcelink.json

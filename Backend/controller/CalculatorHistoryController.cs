@@ -52,5 +52,19 @@ namespace Backend.Controllers
             _history.Remove(existing);
             return Ok();
         }
+
+        // Public method for other controllers to add history
+        public static Calculation AddToHistory(string expression, string result)
+        {
+            var calc = new Calculation
+            {
+                Id = _nextId++,
+                Expression = expression,
+                Result = result
+            };
+            _history.Add(calc);
+            return calc;
+        }
     }
 }
+
