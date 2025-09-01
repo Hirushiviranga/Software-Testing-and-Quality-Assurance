@@ -1,4 +1,4 @@
-name: CI-CD Pipeline
+name: .NET Backend CI
 
 on:
   push:
@@ -8,46 +8,52 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
-    - name: Checkout code
+    # 1. Checkout the code
+    - name: Checkout repository
       uses: actions/checkout@v4
 
+    # 2. Setup .NET SDK
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: 8.0.x
 
+    # 3. Restore dependencies
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore Backend/Backend.csproj
 
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
+    # 4. Build solution
+    - name: Build solution
+      run: dotnet build Backend/Backend.csproj --no-restore --configuration Release
 
-    # Start backend API in background
-    - name: Start backend API
+    # 5. Run API in background
+    - name: Run API in background
+      shell: pwsh
       run: |
-        nohup dotnet run --project Backend/Backend.csproj --urls "http://0.0.0.0:5095" > backend.log 2>&1 &
-        echo "Waiting for API to start..."
-        for i in {1..30}; do
-          if curl -s http://127.0.0.1:5095/CalculatorHistory > /dev/null; then
-            echo "API is ready!"
-            break
-          fi
-          sleep 1
-        done
+        Start-Process -NoNewWindow -FilePath "dotnet" -ArgumentList "run --project Backend/Backend.csproj --urls=http://localhost:5095"
+        Start-Sleep -Seconds 10  # wait for server to start
 
-    # Run backend + UI tests
+    # 6. Test API availability
+    - name: Test Calculator/add endpoint
+      run: |
+        curl http://localhost:5095/Calculator/add?a=5&b=3
+
+    - name: Test CalculatorHistory endpoint
+      run: |
+        curl http://localhost:5095/CalculatorHistory
+
+    # 7. Run unit tests (NUnit)
     - name: Run tests
-      env:
-        DOTNET_ROOT: ${{ runner.toolcache }}/dotnet
-      run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test_results.trx"
+      run: dotnet test Backend.Tests/Backend.Tests.csproj --no-build --verbosity normal
 
-    # Upload test results
+    # 8. Upload test results
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: Backend.Tests/TestResults/test_results.trx
+        path: TestResults/
+
 
