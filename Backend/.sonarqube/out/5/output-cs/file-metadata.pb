@@ -1,0 +1,10 @@
+U
+JD:\QA1\Backend\obj\Debug\net9.0\Backend.MvcApplicationPartsAssemblyInfo.csutf-8D
+9D:\QA1\Backend\obj\Debug\net9.0\Backend.GlobalUsings.g.csutf-8"
+D:\QA1\Backend\Program.csutf-87
+.D:\QA1\Backend\Filters\APIKeyAuthAttributes.csutf-8A
+8D:\QA1\Backend\controller\CalculatorHistoryController.csutf-8:
+1D:\QA1\Backend\controller\CalculatorController.csutf-8l
+aD:\QA1\Backend\CalculatorBackend.Tests\obj\Debug\net9.0\CalculatorBackend.Tests.GlobalUsings.g.csutf-8j
+_D:\QA1\Backend\CalculatorBackend.Tests\obj\Debug\net9.0\CalculatorBackend.Tests.AssemblyInfo.csutf-8q
+fD:\QA1\Backend\CalculatorBackend.Tests\obj\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.csutf-8

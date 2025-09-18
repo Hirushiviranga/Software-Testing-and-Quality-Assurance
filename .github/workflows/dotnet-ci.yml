@@ -10,6 +10,18 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    services:
+      # Optional: if you need a database
+      # mongo:
+      #   image: mongo:6
+      #   ports:
+      #     - 27017:27017
+      #   options: >-
+      #     --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
+      #     --health-interval 10s
+      #     --health-timeout 5s
+      #     --health-retries 5
+
     steps:
       # Step 1: Checkout the code
       - name: Checkout repository
@@ -38,15 +50,30 @@ jobs:
       - name: Build
         run: dotnet build Backend.sln --configuration Release
 
-      # Step 6: Run unit tests
-      - name: Test
+      # Step 6: Install ChromeDriver (for Selenium UI tests)
+      - name: Install ChromeDriver
+        uses: nanasess/setup-chromedriver@v1.4
+        with:
+          chromedriver-version: 'latest'
+
+      # Step 7: Start backend in background
+      - name: Start backend
+        run: dotnet run --project Backend/Backend.csproj --urls "http://localhost:5095" &
+
+      # Step 8: Wait for backend to start
+      - name: Wait for backend
+        run: sleep 15
+
+      # Step 9: Run tests (unit, API, UI)
+      - name: Run tests
         run: |
           dotnet test Backend.Tests/Backend.Tests.csproj \
-          --configuration Release \
-          --logger "trx;LogFileName=test_results.trx" \
-          --results-directory ./TestResults
+            --configuration Release \
+            --no-build \
+            --logger "trx;LogFileName=test_results.trx" \
+            --results-directory ./TestResults
 
-      # Step 7 (Optional): Upload test results
+      # Step 10: Upload test results
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:

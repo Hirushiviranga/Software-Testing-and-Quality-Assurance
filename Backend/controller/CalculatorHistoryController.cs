@@ -1,9 +1,32 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Backend.Controllers
 {
+    // Simple API Key authorization attribute
+    public class ApiKeyAuthAttribute : Attribute, IAuthorizationFilter
+    {
+        private const string ApiKeyHeader = "X-API-KEY";
+        private const string ApiKeyValue = "my-secret-key"; // 🔒 Replace with a strong key
+
+        public void OnAuthorization(AuthorizationFilterContext context)
+        {
+            if (!context.HttpContext.Request.Headers.TryGetValue(ApiKeyHeader, out var extractedApiKey))
+            {
+                context.Result = new UnauthorizedResult();
+                return;
+            }
+
+            if (!string.Equals(extractedApiKey, ApiKeyValue))
+            {
+                context.Result = new UnauthorizedResult();
+            }
+        }
+    }
+
+    // Model class for calculation history
     public class Calculation
     {
         public int Id { get; set; }
@@ -25,6 +48,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
+        [ApiKeyAuth]
         public ActionResult<Calculation> AddCalculation([FromBody] Calculation calc)
         {
             calc.Id = _nextId++;
@@ -33,6 +57,7 @@ namespace Backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [ApiKeyAuth]
         public ActionResult EditCalculation(int id, [FromBody] Calculation calc)
         {
             var existing = _history.FirstOrDefault(c => c.Id == id);
@@ -44,6 +69,7 @@ namespace Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ApiKeyAuth]
         public ActionResult DeleteCalculation(int id)
         {
             var existing = _history.FirstOrDefault(c => c.Id == id);
@@ -53,7 +79,7 @@ namespace Backend.Controllers
             return Ok();
         }
 
-        // Public method for other controllers to add history
+        // Public method for other controllers to add history programmatically
         public static Calculation AddToHistory(string expression, string result)
         {
             var calc = new Calculation
@@ -67,4 +93,5 @@ namespace Backend.Controllers
         }
     }
 }
+
 

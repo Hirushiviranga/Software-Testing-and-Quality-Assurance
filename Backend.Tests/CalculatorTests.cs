@@ -38,7 +38,7 @@ namespace Backend.Tests
 }*/
 
 //passing test case with refactoring
-using NUnit.Framework;
+/*using NUnit.Framework;
 using Backend.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -67,11 +67,11 @@ namespace Backend.Tests
             Assert.That(result.Value, Is.EqualTo(expected));
         }
     }
-}
+}*/
 
 
 //failing testcase without refactoring
-/*using NUnit.Framework;
+using NUnit.Framework;
 using Backend.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -97,8 +97,7 @@ namespace Backend.Tests
             Assert.That(result.Value, Is.EqualTo(5)); // ❌ Deliberately wrong
         }
     }
-}*/
-
+}
 //failing testcase with refactoring
 /*using NUnit.Framework;
 using Backend.Controllers;
@@ -150,3 +149,27 @@ namespace Backend.Tests
     }
 }
 */
+//sonarqube failing tests
+/*using NUnit.Framework;
+
+namespace CalculatorBackend.Tests
+{
+    [TestFixture]
+    public class CalculatorTests
+    {
+        [SetUp]
+        public void Setup() { }
+
+        [Test]
+        public void Addition_ShouldPass()
+        {
+            Assert.AreEqual(4, 2 + 2); // passes
+        }
+
+        [Test]
+        public void Addition_ShouldFail()
+        {
+            Assert.AreEqual(5, 2 + 2); // intentionally fails
+        }
+    }
+}*/

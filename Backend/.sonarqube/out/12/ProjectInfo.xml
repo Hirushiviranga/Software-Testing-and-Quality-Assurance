@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>backend</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>485fef73-2597-4f02-9799-7db1e7c221d0</ProjectGuid>
+  <FullPath>D:\QA1\Backend\backend.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="D:\QA1\Backend\.sonarqube\conf\12\FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePaths">D:\QA1\Backend\.sonarqube\out\12\Issues.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPaths">D:\QA1\Backend\.sonarqube\out\12</Property>
+    <Property Name="sonar.cs.scanner.telemetry">D:\QA1\Backend\.sonarqube\out\12\Telemetry.json</Property>
+  </AnalysisSettings>
+  <Configuration>Debug</Configuration>
+  <Platform>AnyCPU</Platform>
+  <TargetFramework>net9.0</TargetFramework>
+</ProjectInfo>
