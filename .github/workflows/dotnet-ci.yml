@@ -1,0 +1,50 @@
+name: .NET CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Setup .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      # Step 3: Cache NuGet packages
+      - name: Cache NuGet
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # Step 4: Restore dependencies
+      - name: Restore
+        run: dotnet restore
+
+      # Step 5: Build the backend project
+      - name: Build
+        run: dotnet build Backend/Backend.csproj --configuration Release --no-restore
+
+      # Step 6: Run unit tests
+      - name: Run tests
+        run: dotnet test Backend.Tests/Backend.Tests.csproj --configuration Release --no-build --logger "trx;LogFileName=test_results.trx"
+
+      # Step 7 (Optional): Upload test results
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/test_results.trx'
