@@ -38,22 +38,27 @@ jobs:
       - name: Build
         run: dotnet build Backend/Backend.csproj --configuration Release --no-restore
 
-      # Step 6: Install Chrome + ChromeDriver for Selenium UI tests
+      # Step 6: Install Google Chrome
       - name: Install Chrome
         uses: browser-actions/setup-chrome@v1
 
+      # Step 7: Install ChromeDriver (latest available in apt repo)
       - name: Install ChromeDriver
-        uses: browser-actions/setup-chromedriver@v1
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-chromedriver
+          echo "ChromeDriver installed at:"
+          which chromedriver
 
-      # Step 7: Start backend in background
+      # Step 8: Start backend in background
       - name: Start backend
         run: dotnet run --project Backend/Backend.csproj --urls "http://localhost:5095" &
 
-      # Step 8: Wait for backend to start
+      # Step 9: Wait for backend to start
       - name: Wait for backend
         run: sleep 15
 
-      # Step 9: Run tests (unit, API, UI)
+      # Step 10: Run tests (unit, API, UI)
       - name: Run tests
         run: |
           dotnet test Backend.Tests/Backend.Tests.csproj \
@@ -62,7 +67,7 @@ jobs:
             --logger "trx;LogFileName=test_results.trx" \
             --results-directory ./TestResults
 
-      # Step 10: Upload test results
+      # Step 11: Upload test results
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
