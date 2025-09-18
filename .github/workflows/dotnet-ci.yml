@@ -40,15 +40,15 @@ jobs:
 
       # Step 6: Install ChromeDriver (for Selenium UI tests)
       - name: Install ChromeDriver
-        uses: nanasess/setup-chromedriver@v1.4
+        uses: nanasess/setup-chromedriver@v2
         with:
-          chromedriver-version: 'latest'
+          chromedriver-version: latest
 
       # Step 7: Start backend in background
       - name: Start backend
         run: dotnet run --project Backend/Backend.csproj --urls "http://localhost:5095" &
 
-      # Step 8: Wait for backend to start
+      # Step 8: Wait for backend
       - name: Wait for backend
         run: sleep 15
 
