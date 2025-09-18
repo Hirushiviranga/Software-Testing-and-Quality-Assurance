@@ -34,21 +34,21 @@ jobs:
       - name: Restore
         run: dotnet restore
 
-      # Step 5: Build the backend project
+      # Step 5: Build the solution
       - name: Build
-        run: dotnet build Backend/Backend.csproj --configuration Release --no-restore
+        run: dotnet build Backend.sln --configuration Release
 
       # Step 6: Run unit tests
-      - name: Run tests
+      - name: Test
         run: |
           dotnet test Backend.Tests/Backend.Tests.csproj \
-            --configuration Release \
-            --no-build \
-            --logger "trx;LogFileName=test_results.trx"
+          --configuration Release \
+          --logger "trx;LogFileName=test_results.trx" \
+          --results-directory ./TestResults
 
       # Step 7 (Optional): Upload test results
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: '**/test_results.trx'
+          path: ./TestResults/*.trx
