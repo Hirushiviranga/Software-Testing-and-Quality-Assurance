@@ -32,13 +32,13 @@ jobs:
 
       # Step 4: Restore dependencies
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore Backend/Backend.csproj
 
-      # Step 5: Build the solution
+      # Step 5: Build the backend project
       - name: Build
-        run: dotnet build Backend.sln --configuration Release
+        run: dotnet build Backend/Backend.csproj --configuration Release --no-restore
 
-      # Step 6: Install ChromeDriver (for Selenium UI tests)
+      # Step 6: Install ChromeDriver (for Selenium UI tests if needed)
       - name: Install ChromeDriver
         uses: nanasess/setup-chromedriver@v2
         with:
@@ -47,8 +47,8 @@ jobs:
       # Step 7: Start backend in background
       - name: Start backend
         run: dotnet run --project Backend/Backend.csproj --urls "http://localhost:5095" &
-
-      # Step 8: Wait for backend
+      
+      # Step 8: Wait for backend to start
       - name: Wait for backend
         run: sleep 15
 
