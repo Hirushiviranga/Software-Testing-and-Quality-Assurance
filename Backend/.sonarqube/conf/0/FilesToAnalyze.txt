@@ -5,10 +5,8 @@ D:\QA1\Backend\controller\CalculatorController.cs
 D:\QA1\Backend\controller\CalculatorHistoryController.cs
 D:\QA1\Backend\Filters\APIKeyAuthAttributes.cs
 D:\QA1\Backend\Program.cs
-D:\QA1\Backend\obj\Debug\net9.0\Backend.GlobalUsings.g.cs
-D:\QA1\Backend\obj\Debug\net9.0\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs
-D:\QA1\Backend\obj\Debug\net9.0\Backend.AssemblyInfo.cs
-D:\QA1\Backend\obj\Debug\net9.0\Backend.MvcApplicationPartsAssemblyInfo.cs
+D:\QA1\Backend\obj\Debug\net9.0\backend.GlobalUsings.g.cs
+D:\QA1\Backend\obj\Debug\net9.0\backend.MvcApplicationPartsAssemblyInfo.cs
 D:\QA1\Backend\appsettings.Development.json
 D:\QA1\Backend\appsettings.json
 D:\QA1\Backend\CalculatorBackend.Tests\bin\Debug\net9.0\appsettings.Development.json

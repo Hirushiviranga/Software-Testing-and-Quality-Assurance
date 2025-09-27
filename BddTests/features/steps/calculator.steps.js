@@ -1,57 +1,42 @@
 const { Given, When, Then } = require('@cucumber/cucumber');
-const axios = require('axios');
 const { expect } = require('chai');
+const Calculator = require('../../src/Calculator'); // adjust if path differs
 
-let num1, num2, response;
-const BASE_URL = "http://127.0.0.1:5095"; // your ASP.NET backend URL
+let calculator;
+let result;
+let error;
 
 Given('I have numbers {int} and {int}', function (a, b) {
-  num1 = a;
-  num2 = b;
+  calculator = new Calculator();
+  this.a = a;
+  this.b = b;
 });
 
-When('I call the add API', async function () {
-  response = await axios.get(`${BASE_URL}/Calculator/Add?a=${num1}&b=${num2}`)
-    .catch(err => { response = err.response; });
+When('I call the add API', function () {
+  result = calculator.add(this.a, this.b);
 });
 
-When('I call the subtract API', async function () {
-  response = await axios.get(`${BASE_URL}/Calculator/Subtract?a=${num1}&b=${num2}`)
-    .catch(err => { response = err.response; });
+When('I call the subtract API', function () {
+  result = calculator.subtract(this.a, this.b);
 });
 
-When('I call the multiply API', async function () {
-  response = await axios.get(`${BASE_URL}/Calculator/Multiply?a=${num1}&b=${num2}`)
-    .catch(err => { response = err.response; });
+When('I call the multiply API', function () {
+  result = calculator.multiply(this.a, this.b);
 });
-//divide zero test case
-When('I call the divide API', async function () {
+
+When('I call the divide API', function () {
   try {
-    response = await axios.get(`${BASE_URL}/Calculator/Divide?a=${num1}&b=${num2}`);
+    result = calculator.divide(this.a, this.b);
   } catch (err) {
-    if (err.response) {
-      response = err.response;
-    } else {
-      throw err; 
-    }
+    error = err.message;
   }
 });
-//to fail the divide by zero test case
-
-/*When('I call the divide API', async function () {
-  response = await axios.get(`${BASE_URL}/Calculator/Divide?a=${num1}&b=${num2}`)
-    .catch(err => { response = err.response; });
-});*/
-
-
 
 Then('I should get the result {int}', function (expected) {
-  if (!response) throw new Error("No response from API");
-  expect(response.data).to.equal(expected);
+  expect(result).to.equal(expected);
 });
 
-Then('I should get an error {string}', function (expectedMessage) {
-  if (!response) throw new Error("No response from API");
-  expect(response.status).to.equal(400);
-  expect(response.data).to.equal(expectedMessage);
+Then('I should get an error {string}', function (expectedError) {
+  expect(error).to.equal(expectedError);
 });
+

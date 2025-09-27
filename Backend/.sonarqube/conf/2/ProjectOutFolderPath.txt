@@ -1,1 +1,0 @@
-D:\QA1\Backend\.sonarqube\out\2

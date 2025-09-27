@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Add services
+//  Add services
 builder.Services.AddControllers(options =>
 {
     // Register API Key filter globally
@@ -23,14 +21,13 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// ✅ Enforce HTTPS + HSTS
+//  Enforce HTTPS + HSTS
 if (!app.Environment.IsDevelopment())
 {
-    app.UseHsts();  // Adds Strict-Transport-Security header
+    app.UseHsts();  
 }
-app.UseHttpsRedirection();  // Redirect HTTP → HTTPS
+app.UseHttpsRedirection();
 
-// ✅ Middleware
 app.UseCors("AllowReactApp");
 app.UseAuthorization();
 
@@ -38,12 +35,11 @@ app.MapControllers();
 
 app.Run();
 
-
 // ------------------- API Key Attribute -------------------
 public class ApiKeyAuthAttribute : Attribute, IAuthorizationFilter
 {
     private const string ApiKeyHeader = "X-API-KEY";
-    private const string ApiKeyValue = "my-secret-key"; // 🔒 Replace with strong key
+    private const string ApiKeyValue = "my-secret-key"; //  Replace with strong key
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {

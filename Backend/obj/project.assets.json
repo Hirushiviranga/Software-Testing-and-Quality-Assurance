@@ -81,9 +81,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\QA1\\Backend\\Backend.csproj",
-      "projectName": "Backend",
-      "projectPath": "D:\\QA1\\Backend\\Backend.csproj",
+      "projectUniqueName": "D:\\QA1\\Backend\\backend.csproj",
+      "projectName": "backend",
+      "projectPath": "D:\\QA1\\Backend\\backend.csproj",
       "packagesPath": "C:\\Users\\Hirushi\\.nuget\\packages\\",
       "outputPath": "D:\\QA1\\Backend\\obj\\",
       "projectStyle": "PackageReference",

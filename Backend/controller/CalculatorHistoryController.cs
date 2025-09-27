@@ -6,10 +6,11 @@ using System.Linq;
 namespace Backend.Controllers
 {
     // Simple API Key authorization attribute
+    
     public class ApiKeyAuthAttribute : Attribute, IAuthorizationFilter
     {
         private const string ApiKeyHeader = "X-API-KEY";
-        private const string ApiKeyValue = "my-secret-key"; // 🔒 Replace with a strong key
+        private const string ApiKeyValue = "my-secret-key"; 
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
@@ -93,5 +94,6 @@ namespace Backend.Controllers
         }
     }
 }
+
 
 
